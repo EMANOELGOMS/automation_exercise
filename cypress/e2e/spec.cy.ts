@@ -100,13 +100,17 @@ describe("Teste do site de automação", () => {
       .and("contain.text", "Products")
       .click();
 
-    const value_search = "frango"; //nome do produto
+    const value_search = "Asade frango"; //nome do produto
 
     cy.get("#search_product").type(value_search);
     cy.get("#search_product").should("have.value", value_search);
     cy.get("#submit_search").click();
 
-    cy.url().should("include", `search=${value_search}`); // ajuste o parâmetro conforme o sistema
+    const searchTerm = encodeURIComponent(value_search);
+
+    cy.url().should("include", `search=${searchTerm}`); // ajuste o parâmetro conforme o sistema
+
+    cy.url().should("match", new RegExp(`search=${searchTerm}`));
   });
   it("Deve adicionar um produto ao carrinho", () => {
     cy.get(".product-image-wrapper").first().trigger("mouseover");
@@ -135,5 +139,3 @@ describe("Teste do site de automação", () => {
     cy.url().should("include", "category_products/1");
   });
 });
-
-//value_search
