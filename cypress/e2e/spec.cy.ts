@@ -112,7 +112,7 @@ describe("Teste do site de automação", () => {
 
     cy.url().should("match", new RegExp(`search=${searchTerm}`));
   });
-  it("Deve adicionar um produto ao carrinho", () => {
+  it.only("Deve adicionar um produto ao carrinho", () => {
     cy.get(".product-image-wrapper").first().trigger("mouseover");
     cy.get(".add-to-cart").first().click();
     cy.get(".modal-content").should("contain", "Added!");
