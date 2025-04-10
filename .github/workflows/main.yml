@@ -9,7 +9,7 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     container:
-      image: cypress/browsers:node-18.12.0-chrome-107-ff-102
+      image: cypress/browsers:22.14.0
       options: --user 1001
     steps:
       - name: Checkout
