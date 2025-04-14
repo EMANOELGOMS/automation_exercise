@@ -119,6 +119,7 @@ describe("Teste do site de automação", () => {
     cy.get(".modal-footer > .btn").should(`be.visible`).click();
   });
   it.only("Deve remover um produto do carrinho", () => {
+    //neste caso no momento deverá dar erro
     cy.get(".product-image-wrapper").first().trigger("mouseover");
     cy.get(".add-to-cart").first().click();
     cy.get(".modal-content").should("contain", "Added!");
