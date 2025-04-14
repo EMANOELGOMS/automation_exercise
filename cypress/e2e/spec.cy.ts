@@ -31,7 +31,7 @@ describe("Teste do site de automação", () => {
       "Your email or password is incorrect!"
     );
   });
-  it("Deve cadastrar um novo usuário", () => {
+  it.only("Deve cadastrar um novo usuário", () => {
     const nome_teste = `Teste Suka`;
     cy.get('a[href="/login"]').click();
     cy.get('[data-qa="signup-name"]').type(nome_teste);
@@ -116,8 +116,9 @@ describe("Teste do site de automação", () => {
     cy.get(".product-image-wrapper").first().trigger("mouseover");
     cy.get(".add-to-cart").first().click();
     cy.get(".modal-content").should("contain", "Added!");
+    cy.get(".modal-footer > .btn").should(`be.visible`).click();
   });
-  it("Deve remover um produto do carrinho", () => {
+  it.only("Deve remover um produto do carrinho", () => {
     cy.get(".product-image-wrapper").first().trigger("mouseover");
     cy.get(".add-to-cart").first().click();
     cy.get(".modal-content").should("contain", "Added!");
