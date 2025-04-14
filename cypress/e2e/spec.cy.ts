@@ -118,12 +118,16 @@ describe("Teste do site de automação", () => {
     cy.get(".modal-content").should("contain", "Added!");
     cy.get(".modal-footer > .btn").should(`be.visible`).click();
   });
-  it.only("Deve remover um produto do carrinho", () => {
+  it.only("Deve esta com o carrinho vazio", () => {
     //neste caso no momento deverá dar erro
 
     cy.get(".shop-menu > .nav > :nth-child(3) > a")
       .should("be.visible")
       .click();
+
+    cy.get(".text-center")
+      .should("be.visible")
+      .and("contain", "Cart is empty! Click here to buy products.");
     //cy.get(".product-image-wrapper").first().trigger("mouseover");
     //cy.get(".add-to-cart").first().click();
     //cy.get(".modal-content").should("contain", "Added!");
