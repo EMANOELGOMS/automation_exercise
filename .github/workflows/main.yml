@@ -1,10 +1,10 @@
 name: Execução com actions
-on: 
+on:
   push:
-    branches: ['main']
+    branches: ["main"]
 
   pull_request:
-    branches: ['main']
+    branches: ["main"]
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
@@ -18,13 +18,12 @@ jobs:
       # and run all Cypress tests
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
           command: npx cypress run
-        
- 
+
         env:
           # For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
           # in GitHub repo → Settings → Secrets → Actions

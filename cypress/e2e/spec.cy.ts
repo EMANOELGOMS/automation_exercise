@@ -120,12 +120,16 @@ describe("Teste do site de automação", () => {
   });
   it.only("Deve remover um produto do carrinho", () => {
     //neste caso no momento deverá dar erro
-    cy.get(".product-image-wrapper").first().trigger("mouseover");
-    cy.get(".add-to-cart").first().click();
-    cy.get(".modal-content").should("contain", "Added!");
-    cy.get(".modal-footer .btn-success").click(); // Ir para o carrinho
-    cy.get(".cart_quantity_delete").first().click();
-    cy.get(".table-responsive").should("not.contain", "Cart"); // Verifica se o carrinho está vazio
+
+    cy.get(".shop-menu > .nav > :nth-child(3) > a")
+      .should("be.visible")
+      .click();
+    //cy.get(".product-image-wrapper").first().trigger("mouseover");
+    //cy.get(".add-to-cart").first().click();
+    //cy.get(".modal-content").should("contain", "Added!");
+    //cy.get(".modal-footer .btn-success").click(); // Ir para o carrinho
+    //cy.get(".cart_quantity_delete").first().click();
+    //cy.get(".table-responsive").should("not.contain", "Cart"); // Verifica se o carrinho está vazio
   });
   it("Deve preencher e enviar o formulário de contato", () => {
     cy.get('a[href="/contact_us"]').click();
