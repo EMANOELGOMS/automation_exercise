@@ -1,4 +1,4 @@
-/// <reference types="cypress" />
+import { faker } from "@faker-js/faker";
 
 describe("Teste do site de automação", () => {
   beforeEach(() => {
@@ -13,13 +13,6 @@ describe("Teste do site de automação", () => {
     cy.get('a[href="/login"]').click();
     cy.get("h2").should("contain", "Login to your account");
   });
-  it("Deve fazer login com sucesso", () => {
-    cy.get('a[href="/login"]').click();
-    cy.get('[data-qa="login-email"]').type("teste@teste.com");
-    cy.get('[data-qa="login-password"]').type("123456");
-    cy.get('[data-qa="login-button"]').click();
-    cy.get("b").should("contain", "Teste");
-  });
 
   it("Deve exibir erro ao tentar logar com credenciais inválidas", () => {
     cy.get('a[href="/login"]').click();
@@ -31,17 +24,22 @@ describe("Teste do site de automação", () => {
       "Your email or password is incorrect!"
     );
   });
-  it.only("Deve cadastrar um novo usuário", () => {
-    const nome_teste = `Teste Suka`;
+
+  const user_email = `${faker.person.firstName()}@gmail.com`;
+  const user_password = "123456";
+
+  it("Deve cadastrar um novo usuário", () => {
+    const nome_teste = `Josue Carneiro`;
+    //dados da nova conta
     cy.get('a[href="/login"]').click();
     cy.get('[data-qa="signup-name"]').type(nome_teste);
-    cy.get('[data-qa="signup-email"]').type(`teste${Date.now()}@teste.com`);
+    cy.get('[data-qa="signup-email"]').type(user_email);
     cy.get('[data-qa="signup-button"]').click();
     cy.wait(500);
 
     cy.get("#id_gender1").should(`be.visible`).check(); //seleciona o checkbox
-    cy.get('[data-qa="password"]').type(`123456`);
-    //dia
+    cy.get('[data-qa="password"]').type(user_password);
+
     const value_dia: string = `22`;
     const value_mes: string = `12`;
     const value_ano: string = `2021`;
@@ -93,12 +91,26 @@ describe("Teste do site de automação", () => {
     });
     cy.get('[data-qa="continue-button"]').should("be.visible").click();
   });
-  it.only("Deve pesquisar um produto e verificar o resultado", () => {
+
+  it.only("Deve fazer login com sucesso", () => {
+    const user_existente = "Darien@gmail.com";
+    cy.get('a[href="/login"]').click();
+    cy.get('[data-qa="login-email"]').type(user_existente);
+    cy.get('[data-qa="login-password"]').type(user_password);
+    cy.get('[data-qa="login-button"]').click();
+
+    const headr_site = ["Logout", "Delete Account"];
+
+    cy.get(".shop-menu > .nav").within(() => {
+      headr_site.forEach((itens) => {
+        cy.contains("a", itens).should("exist");
+      });
+    });
+  });
+
+  it("Deve pesquisar um produto e verificar o resultado", () => {
     //vai para os produtos
-    cy.get(".shop-menu > .nav > :nth-child(2) > a")
-      .should("be.visible")
-      .and("contain.text", "Products")
-      .click();
+    tela_produto();
 
     const value_search = "Asade frango"; //nome do produto
 
@@ -112,15 +124,22 @@ describe("Teste do site de automação", () => {
 
     cy.url().should("match", new RegExp(`search=${searchTerm}`));
   });
-  it.only("Deve adicionar um produto ao carrinho", () => {
+  it("Deve adicionar um produto ao carrinho", () => {
     cy.get(".product-image-wrapper").first().trigger("mouseover");
     cy.get(".add-to-cart").first().click();
     cy.get(".modal-content").should("contain", "Added!");
     cy.get(".modal-footer > .btn").should(`be.visible`).click();
-  });
-  it.only("Deve esta com o carrinho vazio", () => {
-    //neste caso no momento deverá dar erro
 
+    //verifica se o item esta no carrinho
+
+    cy.get(".shop-menu > .nav > :nth-child(3) > a")
+      .should("be.visible")
+      .click();
+
+    cy.get("#product-1").should("exist");
+  });
+
+  it("Deve esta com o carrinho vazio", () => {
     cy.get(".shop-menu > .nav > :nth-child(3) > a")
       .should("be.visible")
       .click();
@@ -129,6 +148,7 @@ describe("Teste do site de automação", () => {
       .should("be.visible")
       .and("contain", "Cart is empty! Click here to buy products.");
   });
+
   it("Deve preencher e enviar o formulário de contato", () => {
     cy.get('a[href="/contact_us"]').click();
     cy.get('[data-qa="name"]').type("Emanoel Teste");
@@ -139,7 +159,18 @@ describe("Teste do site de automação", () => {
     cy.get(".contact-form").should("contain", "Success!");
   });
   it("Deve acessar uma categoria e validar a URL", () => {
+    tela_produto();
+
     cy.get(".left-sidebar").contains("Women").click();
     cy.url().should("include", "category_products/1");
   });
 });
+
+//acessa a tela de produtos
+
+const tela_produto = () => {
+  cy.get(".shop-menu > .nav > :nth-child(2) > a")
+    .should("be.visible")
+    .and("contain.text", "Products")
+    .click();
+};
