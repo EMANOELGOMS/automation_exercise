@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import funcionalidades from "../support/funcionalidades";
 
 describe("Teste do site de automação", () => {
   beforeEach(() => {
@@ -92,7 +93,7 @@ describe("Teste do site de automação", () => {
     cy.get('[data-qa="continue-button"]').should("be.visible").click();
   });
 
-  it.only("Deve fazer login com sucesso", () => {
+  it("Deve fazer login com sucesso", () => {
     const user_existente = "Darien@gmail.com";
     cy.get('a[href="/login"]').click();
     cy.get('[data-qa="login-email"]').type(user_existente);
@@ -108,9 +109,9 @@ describe("Teste do site de automação", () => {
     });
   });
 
-  it("Deve pesquisar um produto e verificar o resultado", () => {
+  it.only("Deve pesquisar um produto e verificar o resultado", () => {
     //vai para os produtos
-    tela_produto();
+    funcionalidades.tela_de_produtos();
 
     const value_search = "Asade frango"; //nome do produto
 
@@ -159,8 +160,6 @@ describe("Teste do site de automação", () => {
     cy.get(".contact-form").should("contain", "Success!");
   });
   it("Deve acessar uma categoria e validar a URL", () => {
-    tela_produto();
-
     cy.get(".left-sidebar").contains("Women").click();
     cy.url().should("include", "category_products/1");
   });
@@ -168,9 +167,9 @@ describe("Teste do site de automação", () => {
 
 //acessa a tela de produtos
 
-const tela_produto = () => {
-  cy.get(".shop-menu > .nav > :nth-child(2) > a")
-    .should("be.visible")
-    .and("contain.text", "Products")
-    .click();
-};
+// const tela_produto = () => {
+//   cy.get(".shop-menu > .nav > :nth-child(2) > a")
+//     .should("be.visible")
+//     .and("contain.text", "Products")
+//     .click();
+// };
